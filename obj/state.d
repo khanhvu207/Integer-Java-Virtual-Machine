@@ -1,2 +1,1 @@
-obj/state.o: src/state.c include/state.h include/ijvm.h include/util.h \
- include/state.h
+obj/state.o: src/state.c include/state.h include/ijvm.h

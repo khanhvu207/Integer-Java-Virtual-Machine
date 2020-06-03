@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include "ijvm.h"
-// #include "util.h"
-// #include "state.h"
 
 void print_help()
 {
@@ -23,7 +21,7 @@ int main(int argc, char **argv)
 	}
 
 	// run();
-	// destroy_ijvm();
+	destroy_ijvm();
 
 	return 0;
 }
