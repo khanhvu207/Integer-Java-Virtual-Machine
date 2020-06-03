@@ -1,5 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
+#include "ijvm.h"
+#include "state.h"
 
 /* debug print */
 #ifdef DEBUG
@@ -9,5 +11,8 @@
 #else
 #define dprintf(...)
 #endif
+
+word_t HexBytestoInt(byte_t* bytes);
+void printMachineBinary(ijvm_t* machine);
 
 #endif
