@@ -18,6 +18,7 @@ int init_ijvm(char *binary_file)
 		if (inputByte == EOF) break;
 		machine._binary_[machine._binary_size_++] = inputByte;
 	}
+
 	fclose(fp);
 
 	#ifdef DEBUG
@@ -29,9 +30,9 @@ int init_ijvm(char *binary_file)
 		dprintf("Invalid file header, expect IJVM files!\n");
 		return -1;
 	}
+
 	initializeConstant(&machine);
 	initializeText(&machine);
-	
 	return 0;
 }
 
@@ -41,7 +42,7 @@ void destroy_ijvm()
 	free(machine._file_header_);
 	free(machine._constant_);
 	free(machine._text_);
-	memset(&machine, 0, sizeof(ijvm_t));
+	// memset(&machine, 0, sizeof(ijvm_t));
 }
 
 void run()

@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	// run();
+	run();
 	destroy_ijvm();
 
 	return 0;
