@@ -38,11 +38,10 @@ int init_ijvm(char *binary_file)
 
 void destroy_ijvm()
 {
-	free(machine._binary_);
-	free(machine._file_header_);
-	free(machine._constant_);
-	free(machine._text_);
-	// memset(&machine, 0, sizeof(ijvm_t));
+	if (machine._binary_!=NULL) free(machine._binary_);
+	if (machine._file_header_!=NULL) free(machine._file_header_);
+	if (machine._constant_!=NULL) free(machine._constant_);
+	if (machine._text_!=NULL) free(machine._text_);
 }
 
 void run()
