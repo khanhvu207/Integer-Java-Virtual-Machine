@@ -1,5 +1,8 @@
 #include <ijvm.h>
 #include "util.h"
+#include "state.h"
+#include <stdlib.h>
+#include <string.h>
 
 ijvm_t machine = {0, false};
 

@@ -27,4 +27,9 @@ typedef struct ijvm_t {
 	FILE* out;
 } ijvm_t;
 
+void printMachineBinary(ijvm_t* machine);
+bool checkFileHeader(ijvm_t* machine);
+void initializeConstant(ijvm_t* machine);
+void initializeText(ijvm_t* machine);
+
 #endif

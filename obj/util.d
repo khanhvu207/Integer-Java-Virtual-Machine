@@ -1,1 +1,1 @@
-obj/util.o: src/util.c include/util.h include/ijvm.h include/state.h
+obj/util.o: src/util.c include/util.h include/ijvm.h
