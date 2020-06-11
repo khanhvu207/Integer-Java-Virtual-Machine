@@ -10,7 +10,7 @@ void printMachineBinary(ijvm_t* machine) {
 	dprintf("%d bytes in total.\n", machine->_binary_size_);
 	for(int i = 0; i < machine->_binary_size_; ++i) {
 		dprintf("%02x ", machine->_binary_[i] & 0xff);
-		if (i > 0 && i % COLUMNS == 0)
+		if (i > 0 && (i+1) % COLUMNS == 0)
 			dprintf("\n");
 	}
 	
@@ -35,16 +35,17 @@ void initializeConstant(ijvm_t* machine) {
 
 	for (int i = 0; i < BLOCK_SIZE; ++i) 
 		Array[i] = machine->_binary_[BLOCK_SIZE * 2 + i];
-	machine->_constant_size_ = HexBytestoInt(Array);
+	machine->_constant_size_ = HexBytestoInt(Array) / BLOCK_SIZE;
 
-	machine->_constant_ = malloc(machine->_constant_size_ * sizeof(byte_t));
+	machine->_constant_ = malloc(machine->_constant_size_ * sizeof(word_t));
 
-	for (int i = 0; i < machine->_constant_size_; ++i)
-		machine->_constant_[i] = machine->_binary_[BLOCK_SIZE * 3 + i];
+	for(int i = 0, chunk = 0; i < machine->_constant_size_;  ++i, chunk += BLOCK_SIZE){
+		machine->_constant_[i] = HexBytestoInt(machine->_binary_ + BLOCK_SIZE * 3 + chunk);
+	}	
 }
 
 void initializeText(ijvm_t* machine) {
-	int startByte = BLOCK_SIZE * 3 + machine->_constant_size_;
+	int startByte = BLOCK_SIZE * 3 + machine->_constant_size_ * BLOCK_SIZE;
 	byte_t* Array = malloc(BLOCK_SIZE * sizeof(byte_t));
 	
 	for (int i = 0; i < BLOCK_SIZE; ++i) 

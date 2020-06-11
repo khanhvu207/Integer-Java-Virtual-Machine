@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-ijvm_t machine = {0, false};
+ijvm_t machine = {.pc = 0};
 
 int init_ijvm(char *binary_file)
 {
@@ -24,10 +24,10 @@ int init_ijvm(char *binary_file)
 
 	fclose(fp);
 
-	#ifdef DEBUG
-		dprintf("Done reading the binary file!\n");
-		printMachineBinary(&machine);
-	#endif
+#ifdef DEBUG
+	dprintf("Done reading the binary file!\n");
+	printMachineBinary(&machine);
+#endif
 
 	if (!checkFileHeader(&machine)) {
 		dprintf("Invalid file header, expect IJVM files!\n");
@@ -52,31 +52,4 @@ void run()
 	while (machine.pc < machine._text_size_) {
 		if (!step()) break;
 	}
-}
-
-bool step() {
-	++machine.pc;
-	return true;
-}
-
-int text_size() {
-	return machine._text_size_;
-}
-
-byte_t* get_text() {
-	return machine._text_;
-}
-
-int get_program_counter() {
-	return machine.pc;
-}
-
-void set_input(FILE *fp)
-{
-  	machine.inp = fp;
-}
-
-void set_output(FILE *fp)
-{
-	machine.out = fp;
 }
