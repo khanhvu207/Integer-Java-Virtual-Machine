@@ -61,10 +61,17 @@ void initializeText(ijvm_t* machine) {
 	for (int i = 0; i < machine->_text_size_; ++i)
 		machine->_text_[i] = machine->_binary_[startByte + BLOCK_SIZE * 2 + i];
 
-	#ifdef DEBUG
-		dprintf("\n---TEXT extracted from the binary---\n");
-		for (int i = 0; i < machine->_text_size_; ++i)
-			dprintf("%02x ", machine->_text_[i]);
-		dprintf("\n");
-	#endif
+	// #ifdef DEBUG
+	// 	dprintf("\n---TEXT extracted from the binary---\n");
+	// 	for (int i = 0; i < machine->_text_size_; ++i)
+	// 		dprintf("%02x ", machine->_text_[i]);
+	// 	dprintf("\n");
+	// #endif
+}
+
+void initializeStack(ijvm_t* machine){
+	machine->_stack_ = malloc(sizeof(Stack));
+	machine->_stack_->_capacity_ = machine->_text_size_;
+	machine->_stack_->_array_ = malloc(sizeof(word_t) * machine->_stack_->_capacity_);
+	machine->_stack_->sp = -1;
 }

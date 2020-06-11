@@ -20,7 +20,11 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	run();
+	set_output(stderr);
+
+	step();
+	// run();
+	fprintf(stderr, "%d\n", tos());
 	destroy_ijvm();
 
 	return 0;

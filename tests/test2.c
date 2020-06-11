@@ -17,7 +17,10 @@ void test_signed_bipush()
     int res = init_ijvm("files/task2/TestBipush2.ijvm");
     assert(res != -1);
 
+	fprintf(stderr, "PC: %d\n", get_program_counter());
+	fprintf(stderr, "Stack size: %d\n", stack_size());
     step();
+	fprintf(stderr, "Stack size: %d\n", stack_size());
     assert(tos() == -42); // TOS is -42
     destroy_ijvm();
 }
