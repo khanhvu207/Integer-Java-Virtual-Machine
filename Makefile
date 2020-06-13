@@ -2,7 +2,7 @@
 
 IDIR=include
 CC ?= cc
-USERFLAGS+= -D DEBUG
+USERFLAGS+=-D DEBUG
 override CFLAGS+=-I$(IDIR) -g -Wall -Wpedantic $(USERFLAGS) -std=c11 -Wno-format-extra-args
 PEDANTIC_CFLAGS=-std=c11 -Werror -Wpedantic -Wall -Wextra -Wformat=2 -O -Wuninitialized -Winit-self -Wswitch-enum -Wdeclaration-after-statement -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Wno-long-long
 GOJASM ?= tools/gojasm

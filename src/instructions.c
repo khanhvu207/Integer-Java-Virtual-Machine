@@ -69,7 +69,7 @@ inline void SWAP(){
 
 inline void OUT(){
 	word_t top1 = pop();
-	fprintf(machine.out, "%c\n", top1);
+	fprintf(machine.out, "%c", top1);
 	++machine.pc;
 }
 
