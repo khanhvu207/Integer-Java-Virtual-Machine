@@ -12,6 +12,7 @@
 #define dprintf(...)
 #endif
 
-word_t HexBytestoInt(byte_t* bytes);
+word_t BytestoInt(byte_t* bytes);
+word_t BytestoShort(byte_t* bytes);
 
 #endif

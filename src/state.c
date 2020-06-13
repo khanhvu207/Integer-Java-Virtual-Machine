@@ -23,7 +23,7 @@ bool checkFileHeader(ijvm_t* machine) {
 
 	strncpy((char*)header, (const char*)machine->_binary_, HEADER_SIZE);
 
-	if (HexBytestoInt(header) != MAGIC_NUMBER) return false;
+	if (BytestoInt(header) != MAGIC_NUMBER) return false;
 	return true;
 }
 
@@ -31,16 +31,16 @@ void initializeConstant(ijvm_t* machine) {
 	byte_t* Array = malloc(BLOCK_SIZE * sizeof(byte_t));
 	for (int i = 0; i < BLOCK_SIZE; ++i) 
 		Array[i] = machine->_binary_[BLOCK_SIZE + i];
-	machine->_constant_origin_ = HexBytestoInt(Array);
+	machine->_constant_origin_ = BytestoInt(Array);
 
 	for (int i = 0; i < BLOCK_SIZE; ++i) 
 		Array[i] = machine->_binary_[BLOCK_SIZE * 2 + i];
-	machine->_constant_size_ = HexBytestoInt(Array) / BLOCK_SIZE;
+	machine->_constant_size_ = BytestoInt(Array) / BLOCK_SIZE;
 
 	machine->_constant_ = malloc(machine->_constant_size_ * sizeof(word_t));
 
 	for(int i = 0, chunk = 0; i < machine->_constant_size_;  ++i, chunk += BLOCK_SIZE){
-		machine->_constant_[i] = HexBytestoInt(machine->_binary_ + BLOCK_SIZE * 3 + chunk);
+		machine->_constant_[i] = BytestoInt(machine->_binary_ + BLOCK_SIZE * 3 + chunk);
 	}	
 }
 
@@ -50,11 +50,11 @@ void initializeText(ijvm_t* machine) {
 	
 	for (int i = 0; i < BLOCK_SIZE; ++i) 
 		Array[i] = machine->_binary_[startByte + i];
-	machine->_text_origin_ = HexBytestoInt(Array);
+	machine->_text_origin_ = BytestoInt(Array);
 
 	for (int i = 0; i < BLOCK_SIZE; ++i) 
 		Array[i] = machine->_binary_[startByte + BLOCK_SIZE + i];
-	machine->_text_size_ = HexBytestoInt(Array);
+	machine->_text_size_ = BytestoInt(Array);
 
 	machine->_text_ = malloc(machine->_text_size_ * sizeof(byte_t));
 
