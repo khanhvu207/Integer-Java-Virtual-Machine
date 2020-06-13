@@ -6,6 +6,8 @@
 #define MAX_MEMORY 512
 #define HEADER_SIZE 4
 #define BLOCK_SIZE 4
+#define SHORT_SIZE 2
+#define WORD_SIZE 4
 
 typedef struct ijvm_t {
 	word_t pc;

@@ -9,6 +9,9 @@ bool step() {
 		case OP_BIPUSH:
 			BIPUSH();
 			break;
+		case OP_DUP:
+			DUP();
+			break;
 		case OP_IADD:
 			IADD();
 			break;
@@ -31,6 +34,22 @@ bool step() {
 			OUT();
 			break;
 		case OP_HALT:
+			HALT();
+			break;
+		case OP_GOTO:
+			GOTO();
+			break;
+		case OP_IFEQ:
+			IFEQ();
+			break;
+		case OP_IFLT:
+			IFLT();
+			break;
+		case OP_ICMPEQ:
+			IF_ICMPEQ();
+			break;
+		default:
+			dprintf("Couldn't find the corresponding OP_CODE\n");
 			HALT();
 			break;
 	}

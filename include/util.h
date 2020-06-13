@@ -13,6 +13,6 @@
 #endif
 
 word_t BytestoInt(byte_t* bytes);
-word_t BytestoShort(byte_t* bytes);
+short BytestoShort(byte_t* bytes);
 
 #endif

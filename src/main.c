@@ -22,9 +22,7 @@ int main(int argc, char **argv)
 
 	set_output(stderr);
 
-	step();
-	// run();
-	fprintf(stderr, "%d\n", tos());
+	run();
 	destroy_ijvm();
 
 	return 0;
