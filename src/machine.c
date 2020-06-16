@@ -14,7 +14,7 @@ int init_ijvm(char *binary_file)
 		return -1;
 	}
 
-	machine.pc = 0;
+	machine.pc = machine.invk_cnt = 0;
 	machine.isWIDE = false;
 	machine._binary_ = malloc(MAX_MEMORY * sizeof(byte_t));
 	machine._binary_size_ = 0;

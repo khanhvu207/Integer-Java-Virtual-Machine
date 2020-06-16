@@ -36,12 +36,15 @@ void initializeConstant(ijvm_t* machine) {
 	for (int i = 0; i < BLOCK_SIZE; ++i) 
 		Array[i] = machine->_binary_[BLOCK_SIZE * 2 + i];
 	machine->_constant_size_ = BytestoInt(Array) / BLOCK_SIZE;
+	dprintf("# of constants: %d\n", machine->_constant_size_);
 
 	machine->_constant_ = malloc(machine->_constant_size_ * sizeof(word_t));
 
 	for(int i = 0, chunk = 0; i < machine->_constant_size_;  ++i, chunk += BLOCK_SIZE){
 		machine->_constant_[i] = BytestoInt(machine->_binary_ + BLOCK_SIZE * 3 + chunk);
+		dprintf("%d ", machine->_constant_[i]);
 	}	
+	dprintf("\n");
 }
 
 void initializeText(ijvm_t* machine) {
@@ -71,9 +74,9 @@ void initializeText(ijvm_t* machine) {
 
 void initializeStack(ijvm_t* machine){
 	machine->_stack_ = malloc(sizeof(Stack));
-	machine->_stack_->_capacity_ = machine->_stack_->_mainvar_size_ = machine->_text_size_;
+	machine->_stack_->_capacity_ = machine->_text_size_;
 	machine->_stack_->_array_ = malloc(sizeof(word_t) * machine->_stack_->_capacity_);
-	machine->_stack_->_mainvar_ = malloc(sizeof(word_t) * machine->_stack_->_mainvar_size_);
+	machine->_stack_->_mainvar_ = malloc(sizeof(word_t) * LOCAL_MAX);
 	machine->_stack_->sp = -1;
 	machine->_stack_->lv = 0;
 }

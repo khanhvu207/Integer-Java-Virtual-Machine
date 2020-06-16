@@ -82,7 +82,7 @@ bool step() {
 			IRETURN();
 			break;
 		default:
-			dprintf("Couldn't find the corresponding OP_CODE\n");
+			dprintf("Couldn't find the corresponding OP_CODE:%02x\n", machine._text_[machine.pc]);
 			HALT();
 			break;
 	}
@@ -116,6 +116,10 @@ int get_program_counter() {
 word_t get_local_variable(int i){
 	if (machine._stack_->lv == 0) return machine._stack_->_mainvar_[i];
 	else return machine._stack_->_array_[machine._stack_->lv + 1 + i];
+}
+
+byte_t get_instruction(){
+	return machine._text_[machine.pc];
 }
 
 void set_input(FILE *fp)

@@ -33,7 +33,9 @@ inline void push(word_t new_top){
 		machine._stack_->_array_ = realloc(machine._stack_->_array_, machine._stack_->_capacity_ * sizeof(word_t));
 		dprintf("Stack expanded\n");
 	}
+	// dprintf("top=%d, sp=%d\n", top(), machine._stack_->sp);
 	machine._stack_->_array_[++machine._stack_->sp] = new_top;
+	// dprintf("top=%d, sp=%d\n", new_top, machine._stack_->sp);
 }
 
 inline void loadMainVar(unsigned short idx){

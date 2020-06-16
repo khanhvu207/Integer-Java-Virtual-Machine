@@ -2,6 +2,9 @@
 #define STACK_H
 #include "ijvm.h"
 
+#define BOTTOM_OF_STACK 0xFFFFFFFF
+#define LOCAL_MAX 65536
+
 typedef struct Stack {
 	word_t sp;
 	word_t lv;

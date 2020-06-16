@@ -4,7 +4,7 @@
 // #include "state.h"
 
 /* debug print */
-#ifdef DEBUG
+#ifdef DEBUGG
 
 #define dprintf(...) \
     fprintf(stderr,  __VA_ARGS__)
