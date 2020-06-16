@@ -36,8 +36,17 @@ bool step() {
 		case OP_SWAP:
 			SWAP();
 			break;
+		case OP_IN:
+			IN();
+			break;
 		case OP_OUT:
 			OUT();
+			break;
+		case OP_NOP:
+			NOP();
+			break;
+		case OP_ERR:
+			ERR();
 			break;
 		case OP_HALT:
 			HALT();
@@ -65,6 +74,12 @@ bool step() {
 			break;
 		case OP_IINC:
 			IINC(machine.isWIDE);
+			break;
+		case OP_INVOKEVIRTUAL:
+			INVOKEVIRTUAL();
+			break;
+		case OP_IRETURN:
+			IRETURN();
 			break;
 		default:
 			dprintf("Couldn't find the corresponding OP_CODE\n");

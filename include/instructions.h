@@ -10,8 +10,11 @@ void IAND();
 void IOR();
 void POP();
 void SWAP();
+void IN();
 void OUT();
 void HALT();
+void ERR();
+void NOP();
 void GOTO();
 void IFEQ();
 void IFLT();
@@ -20,5 +23,7 @@ void LDC_W();
 void ILOAD(bool WIDE);
 void ISTORE(bool WIDE);
 void IINC(bool WIDE);
+void INVOKEVIRTUAL();
+void IRETURN();
 
 #endif
