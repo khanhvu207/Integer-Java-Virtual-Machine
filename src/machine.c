@@ -16,12 +16,12 @@ int init_ijvm(char *binary_file)
 
 	machine.pc = machine.invk_cnt = 0;
 	machine.isWIDE = false;
-	machine._binary_ = malloc(MAX_MEMORY * sizeof(byte_t));
-	machine._binary_size_ = 0;
-	while (machine._binary_size_ < MAX_MEMORY) {
+	machine.binary = malloc(MAX_MEMORY * sizeof(byte_t));
+	machine.binary_size = 0;
+	while (machine.binary_size < MAX_MEMORY) {
 		word_t inputByte = fgetc(fp);
 		if (inputByte == EOF) break;
-		machine._binary_[machine._binary_size_++] = inputByte;
+		machine.binary[machine.binary_size++] = inputByte;
 	}
 	fclose(fp);
 
@@ -42,22 +42,20 @@ int init_ijvm(char *binary_file)
 
 void destroy_ijvm()
 {
-	if (machine._binary_!=NULL) free(machine._binary_);
-	if (machine._file_header_!=NULL) free(machine._file_header_);
-	if (machine._constant_!=NULL) free(machine._constant_);
-	if (machine._text_!=NULL) free(machine._text_);
-	if (machine._stack_->_array_!=NULL) free(machine._stack_->_array_);
-	if (machine._stack_->_mainvar_!=NULL) free(machine._stack_->_mainvar_);
+	if (machine.binary!=NULL) free(machine.binary);
+	if (machine.file_header!=NULL) free(machine.file_header);
+	if (machine.constant!=NULL) free(machine.constant);
+	if (machine.text!=NULL) free(machine.text);
+	if (machine._stack_->Array!=NULL) free(machine._stack_->Array);
+	if (machine._stack_->mainLocalVar!=NULL) free(machine._stack_->mainLocalVar);
 	if (machine._stack_!=NULL) free(machine._stack_);
-	
 	machine.inp = NULL;
 	machine.out = NULL;
-	memset(&machine, 0, sizeof(ijvm_t));
 }
 
 void run()
 {
-	while (machine.pc < machine._text_size_) {
+	while (machine.pc < machine.text_size) {
 		if (!step()) break;
 	}
 }

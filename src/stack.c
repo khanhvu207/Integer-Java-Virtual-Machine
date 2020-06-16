@@ -14,7 +14,7 @@ inline void checkEmpty(){
 
 word_t top(){	
 	checkEmpty();
-	return machine._stack_->_array_[machine._stack_->sp];
+	return machine._stack_->Array[machine._stack_->sp];
 }
 
 word_t pop(){
@@ -28,20 +28,20 @@ word_t stackSize(){
 }
 
 inline void push(word_t new_top){
-	if (machine._stack_->sp + 1 == machine._stack_->_capacity_){
-		machine._stack_->_capacity_ *= 2;
-		machine._stack_->_array_ = realloc(machine._stack_->_array_, machine._stack_->_capacity_ * sizeof(word_t));
+	if (machine._stack_->sp + 1 == machine._stack_->capacity){
+		machine._stack_->capacity *= 2;
+		machine._stack_->Array = realloc(machine._stack_->Array, machine._stack_->capacity * sizeof(word_t));
 		dprintf("Stack expanded\n");
 	}
 	// dprintf("top=%d, sp=%d\n", top(), machine._stack_->sp);
-	machine._stack_->_array_[++machine._stack_->sp] = new_top;
+	machine._stack_->Array[++machine._stack_->sp] = new_top;
 	// dprintf("top=%d, sp=%d\n", new_top, machine._stack_->sp);
 }
 
 inline void loadMainVar(unsigned short idx){
-	push(machine._stack_->_mainvar_[idx]);
+	push(machine._stack_->mainLocalVar[idx]);
 }
 
 inline void storeMainVar(unsigned short idx, word_t val){
-	machine._stack_->_mainvar_[idx] = val;
+	machine._stack_->mainLocalVar[idx] = val;
 }

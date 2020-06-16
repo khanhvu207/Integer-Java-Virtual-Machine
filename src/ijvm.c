@@ -6,15 +6,8 @@
 extern ijvm_t machine;
 
 bool step() {
-	if(machine.pc >= machine._text_size_) return false;
-	// fprintf(stderr, "PC=%d\n", machine.pc);
-	// if(machine.pc==749){
-	// 	for(int i=0;i<machine._stack_->sp;++i)
-	// 		fprintf(stderr, "%d ", machine._stack_->_array_[i]);
-	// 	fprintf(stderr, "\n");
-	// }
-	switch(machine._text_[machine.pc]){
-		
+	if(machine.pc >= machine.text_size) return false;
+	switch(machine.text[machine.pc]){
 		case OP_WIDE:
 			++machine.pc;
 			machine.isWIDE = true;
@@ -90,7 +83,7 @@ bool step() {
 			IRETURN();
 			break;
 		default:
-			dprintf("Couldn't find the corresponding OP_CODE:%02x\n", machine._text_[machine.pc]);
+			dprintf("Couldn't find the corresponding OP_CODE:%02x\n", machine.text[machine.pc]);
 			HALT();
 			break;
 	}
@@ -106,15 +99,15 @@ int stack_size(){
 }
 
 word_t* get_stack(){
-	return machine._stack_->_array_;
+	return machine._stack_->Array;
 }
 
 int text_size() {
-	return machine._text_size_;
+	return machine.text_size;
 }
 
 byte_t* get_text() {
-	return machine._text_;
+	return machine.text;
 }
 
 int get_program_counter() {
@@ -122,16 +115,16 @@ int get_program_counter() {
 }
 
 word_t get_local_variable(int i){
-	if (machine._stack_->lv == 0) return machine._stack_->_mainvar_[i];
-	else return machine._stack_->_array_[machine._stack_->lv + 1 + i];
+	if (machine._stack_->lv == 0) return machine._stack_->mainLocalVar[i];
+	else return machine._stack_->Array[machine._stack_->lv + 1 + i];
 }
 
 byte_t get_instruction(){
-	return machine._text_[machine.pc];
+	return machine.text[machine.pc];
 }
 
 bool finished(){
-	return machine.pc == machine._text_size_;
+	return machine.pc == machine.text_size;
 }
 
 void set_input(FILE *fp)

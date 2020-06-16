@@ -3,7 +3,7 @@
 #include "ijvm.h"
 #include "stack.h"
 
-#define MAX_MEMORY 100000
+#define MAX_MEMORY 8096 // max 8GB
 #define HEADER_SIZE 4
 #define BLOCK_SIZE 4
 #define SHORT_SIZE 2
@@ -14,18 +14,18 @@ typedef struct ijvm_t {
 	bool isWIDE;
 	word_t invk_cnt;
 	
-	byte_t* _binary_;
-	word_t _binary_size_;
+	byte_t* binary;
+	word_t binary_size;
 
-	byte_t* _file_header_;
+	byte_t* file_header;
 
-	word_t* _constant_;
-	word_t _constant_origin_;
-	word_t _constant_size_;
+	word_t* constant;
+	word_t constant_origin;
+	word_t constant_size;
 
-	byte_t* _text_;
-	word_t _text_origin_;
-	word_t _text_size_;
+	byte_t* text;
+	word_t text_origin;
+	word_t text_size;
 
 	Stack* _stack_;
 

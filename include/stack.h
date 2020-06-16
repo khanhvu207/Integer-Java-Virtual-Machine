@@ -2,16 +2,15 @@
 #define STACK_H
 #include "ijvm.h"
 
-#define BOTTOM_OF_STACK 0xFFFFFFFF
-#define LOCAL_MAX 65536
+#define OBJREF 0xFFFFFFFF
+#define LOCAL_MAX (1<<16)
 
 typedef struct Stack {
 	word_t sp;
 	word_t lv;
-	word_t* _array_;
-	word_t _capacity_;
-	word_t* _mainvar_; // main()'s local variables
-	word_t _mainvar_size_;
+	word_t* Array;
+	word_t capacity;
+	word_t* mainLocalVar; // main()'s local variables
 } Stack;
 
 void checkEmpty();
