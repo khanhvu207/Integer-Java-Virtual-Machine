@@ -11,7 +11,8 @@
 
 typedef struct ijvm_t {
 	word_t pc;
-
+	bool isWIDE;
+	
 	byte_t* _binary_;
 	word_t _binary_size_;
 

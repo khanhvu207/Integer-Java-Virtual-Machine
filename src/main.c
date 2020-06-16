@@ -20,8 +20,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	set_output(stderr);
-
 	run();
 	destroy_ijvm();
 

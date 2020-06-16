@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-ijvm_t machine = {.pc = 0};
+ijvm_t machine = {.pc = 0, .isWIDE = false};
 
 int init_ijvm(char *binary_file)
 {
@@ -14,6 +14,8 @@ int init_ijvm(char *binary_file)
 		return -1;
 	}
 
+	machine.pc = 0;
+	machine.isWIDE = false;
 	machine._binary_ = malloc(MAX_MEMORY * sizeof(byte_t));
 	machine._binary_size_ = 0;
 	while (machine._binary_size_ < MAX_MEMORY) {
@@ -45,7 +47,11 @@ void destroy_ijvm()
 	if (machine._constant_!=NULL) free(machine._constant_);
 	if (machine._text_!=NULL) free(machine._text_);
 	if (machine._stack_->_array_!=NULL) free(machine._stack_->_array_);
+	if (machine._stack_->_mainvar_!=NULL) free(machine._stack_->_mainvar_);
 	if (machine._stack_!=NULL) free(machine._stack_);
+	
+	machine.inp = NULL;
+	machine.out = NULL;
 	memset(&machine, 0, sizeof(ijvm_t));
 }
 

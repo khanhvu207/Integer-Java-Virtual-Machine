@@ -5,7 +5,13 @@
 extern ijvm_t machine;
 
 bool step() {
+	if(machine.pc >= machine._text_size_) return false;
 	switch(machine._text_[machine.pc]){
+		case OP_WIDE:
+			++machine.pc;
+			machine.isWIDE = true;
+			step();
+			break;
 		case OP_BIPUSH:
 			BIPUSH();
 			break;
@@ -48,6 +54,18 @@ bool step() {
 		case OP_ICMPEQ:
 			IF_ICMPEQ();
 			break;
+		case OP_LDC_W:
+			LDC_W();
+			break;
+		case OP_ILOAD:
+			ILOAD(machine.isWIDE);
+			break;
+		case OP_ISTORE:
+			ISTORE(machine.isWIDE);
+			break;
+		case OP_IINC:
+			IINC(machine.isWIDE);
+			break;
 		default:
 			dprintf("Couldn't find the corresponding OP_CODE\n");
 			HALT();
@@ -78,6 +96,11 @@ byte_t* get_text() {
 
 int get_program_counter() {
 	return machine.pc;
+}
+
+word_t get_local_variable(int i){
+	if (machine._stack_->lv == 0) return machine._stack_->_mainvar_[i];
+	else return machine._stack_->_array_[machine._stack_->lv + 1 + i];
 }
 
 void set_input(FILE *fp)

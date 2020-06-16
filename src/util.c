@@ -7,3 +7,7 @@ word_t BytestoInt(byte_t* bytes) {
 short BytestoShort(byte_t* bytes){
 	return ((bytes[0]&0xFF)<<8)|(bytes[1]&0xFF);
 }
+
+unsigned short BytestoUnsignedShort(byte_t* bytes){
+	return ((bytes[0]&0xFF)<<8)|(bytes[1]&0xFF);
+}

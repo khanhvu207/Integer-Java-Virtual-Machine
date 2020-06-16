@@ -14,5 +14,6 @@
 
 word_t BytestoInt(byte_t* bytes);
 short BytestoShort(byte_t* bytes);
+unsigned short BytestoUnsignedShort(byte_t* bytes);
 
 #endif

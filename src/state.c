@@ -71,7 +71,9 @@ void initializeText(ijvm_t* machine) {
 
 void initializeStack(ijvm_t* machine){
 	machine->_stack_ = malloc(sizeof(Stack));
-	machine->_stack_->_capacity_ = machine->_text_size_;
+	machine->_stack_->_capacity_ = machine->_stack_->_mainvar_size_ = machine->_text_size_;
 	machine->_stack_->_array_ = malloc(sizeof(word_t) * machine->_stack_->_capacity_);
+	machine->_stack_->_mainvar_ = malloc(sizeof(word_t) * machine->_stack_->_mainvar_size_);
 	machine->_stack_->sp = -1;
+	machine->_stack_->lv = 0;
 }
