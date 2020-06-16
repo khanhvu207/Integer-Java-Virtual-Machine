@@ -1,12 +1,20 @@
 #include "state.h"
 #include "util.h"
 #include "instructions.h"
+#include <stdlib.h>
 
 extern ijvm_t machine;
 
 bool step() {
 	if(machine.pc >= machine._text_size_) return false;
+	// fprintf(stderr, "PC=%d\n", machine.pc);
+	// if(machine.pc==749){
+	// 	for(int i=0;i<machine._stack_->sp;++i)
+	// 		fprintf(stderr, "%d ", machine._stack_->_array_[i]);
+	// 	fprintf(stderr, "\n");
+	// }
 	switch(machine._text_[machine.pc]){
+		
 		case OP_WIDE:
 			++machine.pc;
 			machine.isWIDE = true;
@@ -120,6 +128,10 @@ word_t get_local_variable(int i){
 
 byte_t get_instruction(){
 	return machine._text_[machine.pc];
+}
+
+bool finished(){
+	return machine.pc == machine._text_size_;
 }
 
 void set_input(FILE *fp)

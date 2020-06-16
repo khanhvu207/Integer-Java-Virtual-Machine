@@ -79,4 +79,5 @@ void initializeStack(ijvm_t* machine){
 	machine->_stack_->_mainvar_ = malloc(sizeof(word_t) * LOCAL_MAX);
 	machine->_stack_->sp = -1;
 	machine->_stack_->lv = 0;
+	push(BOTTOM_OF_STACK);
 }

@@ -226,7 +226,6 @@ inline void IINC(bool WIDE){
 }
 
 inline void INVOKEVIRTUAL(){
-	// fprintf(stderr, "%d\n", ++machine.invk_cnt);
 	// dprintf("Caller stack, lv=%d, sp=%d: ", machine._stack_->lv, machine._stack_->sp);
 	// for(int i = 0; i <= machine._stack_->sp; ++i)
 	// 	dprintf("%d ", machine._stack_->_array_[i]);
