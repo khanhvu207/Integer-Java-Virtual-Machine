@@ -82,6 +82,20 @@ bool step() {
 		case OP_IRETURN:
 			IRETURN();
 			break;
+		// ### HEAP ###
+		case OP_NEWARRAY:
+			NEWARRAY();
+			break;
+		case OP_IASTORE:
+			IASTORE();
+			break;
+		case OP_IALOAD:
+			IALOAD();
+			break;
+		case OP_GC:
+			GC();
+			break;
+		// ############
 		default:
 			dprintf("Couldn't find the corresponding OP_CODE:%02x\n", machine.text[machine.pc]);
 			HALT();

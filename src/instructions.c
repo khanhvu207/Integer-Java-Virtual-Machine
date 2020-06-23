@@ -169,7 +169,7 @@ inline void ILOAD(bool WIDE){
 		offset = machine.text[machine.pc + 1];
 	}
 
-	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == OBJREF) // lv is at the bottom of the stack -> load from main()'s variables frame
+	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == MAINREF) // lv is at the bottom of the stack -> load from main()'s variables frame
 		loadMainVar(offset);
 	else push(machine._stack_->Array[machine._stack_->lv + 1 + offset]);
 	dprintf("ILOAD lv=%d, idx=%d, value=%d\n", machine._stack_->lv, offset, top());
@@ -192,7 +192,7 @@ inline void ISTORE(bool WIDE){
 	}
 
 	word_t top1 = pop();
-	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == OBJREF) //lv is at the bottom of the stack ->	store to main()'s variables frame
+	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == MAINREF) //lv is at the bottom of the stack ->	store to main()'s variables frame
 		storeMainVar(offset, top1);
 	else machine._stack_->Array[machine._stack_->lv + 1 + offset] = top1;
 	dprintf("ISTORE idx=%d, value=%d\n", offset, top1);
@@ -218,7 +218,7 @@ inline void IINC(bool WIDE){
 		inc = (int8_t)machine.text[machine.pc + 2]; //cast to signed byte
 	}
 
-	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == OBJREF) machine._stack_->mainLocalVar[offset] += inc;
+	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == MAINREF) machine._stack_->mainLocalVar[offset] += inc;
 	else machine._stack_->Array[machine._stack_->lv + 1 + offset] += inc;
 	dprintf("IINC var_id=%d, value=%d\n", offset, inc);
 
@@ -266,6 +266,7 @@ inline void INVOKEVIRTUAL(){
 
 	free(args);
 	free(func_args);
+	triggerOnNewFrame();
 	dprintf("INVOKEVIRTUAL caller_pc=%d, num_args=%d, num_local=%d\n", caller_pc, num_args, num_local);
 }
 
@@ -277,4 +278,41 @@ inline void IRETURN(){
 	push(result); // push result on top of the stack
 	dprintf("IRETURN %d, machine.pc=%d\n", result, machine.pc);
 	machine.pc += 3;
+
+	sweep(machine._heap_->currentFrame);
+	machine._heap_->currentFrame--;
 }
+
+inline void NEWARRAY(){
+	word_t newArraySize = pop();
+	word_t arrayref = getNewArrayID();
+	
+	allocateNewArray(arrayref, newArraySize);
+	push(arrayref);
+	trackNewArray(arrayref);
+	machine.pc++;
+}
+
+inline void IASTORE(){
+	word_t arrayref = pop();
+	word_t index = pop();
+	word_t val = pop();
+
+	arrayStore(arrayref, index, val);
+	machine.pc++;
+}
+
+inline void IALOAD(){
+	word_t arrayref = pop();
+	word_t index = pop();
+
+	push(arrayLoad(arrayref, index));
+	machine.pc++;
+}
+
+inline void GC(){
+	for (int i = machine._heap_->currentFrame + 1; i < machine._heap_->trackerCap; ++i)
+		sweep(i);
+	machine.pc++;
+}
+

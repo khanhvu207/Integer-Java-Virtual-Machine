@@ -26,4 +26,10 @@ void IINC(bool WIDE);
 void INVOKEVIRTUAL();
 void IRETURN();
 
+// HEAP
+void NEWARRAY();
+void IALOAD();
+void IASTORE();
+void GC();
+
 #endif

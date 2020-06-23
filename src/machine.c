@@ -30,25 +30,45 @@ int init_ijvm(char *binary_file)
 	printMachineBinary(&machine);
 #endif
 
-	if (!checkFileHeader(&machine)) {
+	if (!checkFileHeader()) {
 		dprintf("Invalid file header, expect IJVM files!\n");
 		return -1;
 	}
-	initializeConstant(&machine);
-	initializeText(&machine);
-	initializeStack(&machine);
+	initializeConstant();
+	initializeText();
+	initializeStack();
+	initializeHeap();
 	return 0;
 }
 
 void destroy_ijvm()
 {
+	// ### FREE TEXT MEM ###
 	if (machine.binary!=NULL) free(machine.binary);
 	if (machine.file_header!=NULL) free(machine.file_header);
 	if (machine.constant!=NULL) free(machine.constant);
 	if (machine.text!=NULL) free(machine.text);
+	
+	// ### FREE STACK MEM ###
 	if (machine._stack_->Array!=NULL) free(machine._stack_->Array);
 	if (machine._stack_->mainLocalVar!=NULL) free(machine._stack_->mainLocalVar);
 	if (machine._stack_!=NULL) free(machine._stack_);
+
+	// ### FREE HEAP MEM ###
+	for (int i = 0; i < machine._heap_->heap_size; ++i) 
+		if (machine._heap_->used[i]) freeArray(i);
+	if (machine._heap_->array_ptr!=NULL) free(machine._heap_->array_ptr);
+	if (machine._heap_->used!=NULL) free(machine._heap_->used);
+	if (machine._heap_->array_size!=NULL) free(machine._heap_->array_size);
+	
+	for (int i = 0; i < machine._heap_->trackerCap; ++i)
+		if (machine._heap_->arrayrefList[i]!=NULL) free(machine._heap_->arrayrefList[i]);
+	if (machine._heap_->arrayrefList!=NULL) free(machine._heap_->arrayrefList);
+	if (machine._heap_->countArray!=NULL) free(machine._heap_->countArray);
+	if (machine._heap_->listSize!=NULL) free(machine._heap_->listSize);
+	if (machine._heap_!=NULL) free(machine._heap_);
+
+
 	machine.inp = NULL;
 	machine.out = NULL;
 }

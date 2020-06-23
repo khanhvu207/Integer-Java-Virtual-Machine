@@ -2,6 +2,7 @@
 #define STATE_H
 #include "ijvm.h"
 #include "stack.h"
+#include "heap.h"
 #include "util.h"
 #include <stdlib.h>
 #include <string.h>
@@ -32,14 +33,17 @@ typedef struct ijvm_t {
 
 	Stack* _stack_;
 
+	Heap* _heap_;
+
 	FILE* inp;
 	FILE* out;
 } ijvm_t;
 
-void printMachineBinary(ijvm_t* machine);
-bool checkFileHeader(ijvm_t* machine);
-void initializeConstant(ijvm_t* machine);
-void initializeText(ijvm_t* machine);
-void initializeStack(ijvm_t* machine);
+void printMachineBinary();
+bool checkFileHeader();
+void initializeConstant();
+void initializeText();
+void initializeStack();
+void initializeHeap();
 
 #endif

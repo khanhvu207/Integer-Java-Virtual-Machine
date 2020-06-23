@@ -1,5 +1,4 @@
 #include "state.h"
-#include "util.h"
 #include <assert.h>
 #include <stdlib.h>
 
