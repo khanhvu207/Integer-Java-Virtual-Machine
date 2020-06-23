@@ -49,6 +49,7 @@ inline void freeArray(int arrayref){
 	if (machine._heap_->array_ptr[arrayref]!=NULL)
 		free(machine._heap_->array_ptr[arrayref]);
 	machine._heap_->array_size[arrayref] = 0;
+	machine._heap_->array_ptr[arrayref] = NULL;
 }
 
 inline void resizeHeap(){
@@ -89,15 +90,15 @@ inline void resizeList(){
 }
 
 inline void sweep(int frameIndex){
-	for (int i = 0; i < machine._heap_->countArray[frameIndex]; ++i)
-		if (machine._heap_->arrayrefList[frameIndex][i]!=NULL){
-			int arrayref = machine._heap_->arrayrefList[frameIndex][i];
-			if(!machine._heap_->used[arrayref]) continue;
-			freeArray(arrayref);
-		}
+	for (int i = 0; i < machine._heap_->countArray[frameIndex]; ++i){
+		int arrayref = machine._heap_->arrayrefList[frameIndex][i];
+		if(!machine._heap_->used[arrayref]) continue;
+		freeArray(arrayref);
+	}
 
 	// clean up tracker arrays
 	if (machine._heap_->arrayrefList[frameIndex]!=NULL) free(machine._heap_->arrayrefList[frameIndex]);
+	machine._heap_->arrayrefList[frameIndex] = NULL;
 	machine._heap_->countArray[frameIndex] = 0;
 	machine._heap_->listSize[frameIndex] = 0;
 }
