@@ -2,6 +2,9 @@
 #define STATE_H
 #include "ijvm.h"
 #include "stack.h"
+#include "util.h"
+#include <stdlib.h>
+#include <string.h>
 
 #define MAX_MEMORY 8096 // max 8GB
 #define HEADER_SIZE 4

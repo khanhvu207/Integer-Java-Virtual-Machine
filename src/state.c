@@ -1,7 +1,4 @@
 #include "state.h"
-#include "util.h"
-#include <stdlib.h>
-#include <string.h>
 
 void printMachineBinary(ijvm_t* machine) {
 	#define COLUMNS 8
@@ -64,6 +61,7 @@ void initializeText(ijvm_t* machine) {
 	for (int i = 0; i < machine->text_size; ++i)
 		machine->text[i] = machine->binary[startByte + BLOCK_SIZE * 2 + i];
 
+	free(Array);
 	// #ifdef DEBUG
 	// 	dprintf("\n---TEXT extracted from the binary---\n");
 	// 	for (int i = 0; i < machine->_text_size_; ++i)

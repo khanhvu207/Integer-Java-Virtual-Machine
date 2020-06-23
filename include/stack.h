@@ -2,6 +2,7 @@
 #define STACK_H
 #include "ijvm.h"
 
+
 #define OBJREF 0xFFFFFFFF
 #define LOCAL_MAX (1<<16)
 
