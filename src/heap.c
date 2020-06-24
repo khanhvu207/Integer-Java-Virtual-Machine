@@ -1,3 +1,4 @@
+#include "heap.h"
 #include "state.h"
 #include <assert.h>
 #include <stdlib.h>
@@ -64,12 +65,13 @@ inline void resizeHeap(){
 
 inline void triggerOnNewFrame(){
 	machine._heap_->currentFrame++;
-	if (machine._heap_->currentFrame + 1 >= machine._heap_->trackerCap){
-		machine._heap_->trackerCap *= 2;
-		machine._heap_->countArray = realloc(machine._heap_->countArray, machine._heap_->trackerCap * sizeof(word_t));
-		machine._heap_->listSize = realloc(machine._heap_->listSize, machine._heap_->trackerCap * sizeof(word_t));
-		machine._heap_->arrayrefList = realloc(machine._heap_->arrayrefList, machine._heap_->trackerCap * sizeof(word_t*));
-	}
+	// if (machine._heap_->currentFrame + 1 >= machine._heap_->trackerCap){
+	// 	machine._heap_->trackerCap += 1;
+	// 	machine._heap_->countArray = realloc(machine._heap_->countArray, machine._heap_->trackerCap * sizeof(word_t));
+	// 	machine._heap_->listSize = realloc(machine._heap_->listSize, machine._heap_->trackerCap * sizeof(word_t));
+	// 	machine._heap_->arrayrefList = realloc(machine._heap_->arrayrefList, machine._heap_->trackerCap * sizeof(word_t*));
+	// 	// machine._heap_->arrayrefList[machine._heap_->trackerCap-1] = malloc(1 * sizeof(word_t));
+	// }
 
 	int frameIndex = machine._heap_->currentFrame;
 	machine._heap_->countArray[frameIndex] = 0;

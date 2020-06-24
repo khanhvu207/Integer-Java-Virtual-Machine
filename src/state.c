@@ -99,6 +99,7 @@ void initializeHeap(){
 	machine._heap_->countArray = malloc(INIT_GC * sizeof(word_t));
 	machine._heap_->listSize = malloc(INIT_GC * sizeof(word_t));
 	machine._heap_->arrayrefList = malloc(INIT_GC * sizeof(word_t*));
+	for (int i = 0; i < INIT_GC; ++i) machine._heap_->arrayrefList[i] = NULL;
 
 	// initialize tracker for main frame
 	machine._heap_->currentFrame++;

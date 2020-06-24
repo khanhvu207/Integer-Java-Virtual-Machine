@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 extern ijvm_t machine;
+char GUIbuffer[50000];
 
 inline void BIPUSH(){
 	//signed-byte!
@@ -85,6 +86,7 @@ inline void OUT(){
 	dprintf("OUT %c\n", top1);
 	fprintf(machine.out, "%c", top1);
 	++machine.pc;
+	strcat(GUIbuffer, (char*)&top1);
 }
 
 inline void NOP(){

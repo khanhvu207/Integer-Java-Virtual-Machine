@@ -16,6 +16,7 @@
 typedef struct ijvm_t {
 	word_t pc;
 	bool isWIDE;
+	bool isRunning;
 	word_t invk_cnt;
 	
 	byte_t* binary;

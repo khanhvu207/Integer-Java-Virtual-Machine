@@ -3,7 +3,7 @@
 #include "ijvm.h"
 
 #define INIT_ARRAY_SLOT 1000
-#define INIT_GC 100
+#define INIT_GC 100000
 
 #define OP_NEWARRAY         ((byte_t) 0xD1)
 #define OP_IALOAD           ((byte_t) 0xD2)

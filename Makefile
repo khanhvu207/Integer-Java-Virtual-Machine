@@ -3,7 +3,7 @@
 IDIR=include
 CC ?= cc
 USERFLAGS+=-D DEBUG
-override CFLAGS+=-I$(IDIR) -g -Wall -Wpedantic $(USERFLAGS) -std=c11 -Wno-format-extra-args
+override CFLAGS+=-I$(IDIR) -g -Wall -Wpedantic $(USERFLAGS) -std=c11 -Wno-format-extra-args `pkg-config --libs --cflags gtk+-2.0`
 PEDANTIC_CFLAGS=-std=c11 -Werror -Wpedantic -Wall -Wextra -Wformat=2 -O -Wuninitialized -Winit-self -Wswitch-enum -Wdeclaration-after-statement -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Wno-long-long
 GOJASM ?= tools/gojasm
 
@@ -28,11 +28,12 @@ $(ODIR)/%.o: $(SRCDIR)/%.c
 	+@[ -d $(ODIR) ] || mkdir -p $(ODIR)
 	$(CC) -MMD $(CFLAGS) -c -o $@ $<
 
+ijvm-gui: $(OBJ) src/gui/gui.c
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 ijvm: $(OBJ) $(ODIR)/main.o
 	echo $(SRCS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
 
 clean:
 	-rm -f $(ODIR)/*.o *~ core.* $(INCDIR)/*~

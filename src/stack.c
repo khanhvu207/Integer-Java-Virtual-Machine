@@ -1,3 +1,4 @@
+#include "stack.h"
 #include "state.h"
 #include <assert.h>
 #include <stdlib.h>
