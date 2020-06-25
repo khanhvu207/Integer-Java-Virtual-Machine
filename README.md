@@ -1,6 +1,6 @@
 # Integer Java-Virtual Machine
 *An IJVM emulator by Khanh Vu  
-Required OS: Ubuntu 18.04 LTS  
+OS: Ubuntu 18.04 LTS  
 https://github.com/khanhvu207/Integer-Java-Virtual-Machine*
 
 ## Run the code
