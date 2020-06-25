@@ -141,7 +141,8 @@ inline void IF_ICMPEQ(){
 
 inline void LDC_W(){
 	byte_t* args = malloc(SHORT_SIZE * sizeof(byte_t));
-	memcpy(args, machine.text+machine.pc+1, SHORT_SIZE);
+	args[0] = machine.text[machine.pc+1];
+	args[1] = machine.text[machine.pc+2];
 
 	//unsigned short!
 	unsigned short idx = BytestoUnsignedShort(args);
@@ -154,7 +155,6 @@ inline void LDC_W(){
 	dprintf("LDC_W %d\n", top());
 	machine.pc += 3;
 	free(args);
-	args=NULL;
 }
 
 inline void ILOAD(bool WIDE){
@@ -162,20 +162,17 @@ inline void ILOAD(bool WIDE){
 	unsigned short offset;
 	if (WIDE){
 		byte_t* args = malloc(SHORT_SIZE * sizeof(byte_t));
-		memcpy(args, machine.text+machine.pc+1, SHORT_SIZE);
+		args[0] = machine.text[machine.pc+1];
+		args[1] = machine.text[machine.pc+2];
 		offset = BytestoUnsignedShort(args);
 		free(args);
-		args=NULL;
 	}
 	else{
 		offset = machine.text[machine.pc + 1];
 	}
-
-	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == MAINREF) // lv is at the bottom of the stack -> load from main()'s variables frame
-		loadMainVar(offset);
-	else push(machine._stack_->Array[machine._stack_->lv + 1 + offset]);
-	dprintf("ILOAD lv=%d, idx=%d, value=%d\n", machine._stack_->lv, offset, top());
-
+	word_t val = machine._stack_->frameLocalVar[machine._stack_->frameIndex][offset];
+	push(val);
+	dprintf("ILOAD idx=%d, value=%d\n", offset, top());
 	machine.pc += WIDE ? 3 : 2;
 }
 
@@ -184,21 +181,17 @@ inline void ISTORE(bool WIDE){
 	unsigned short offset;
 	if (WIDE){
 		byte_t* args = malloc(SHORT_SIZE * sizeof(byte_t));
-		memcpy(args, machine.text+machine.pc+1, SHORT_SIZE);
+		args[0] = machine.text[machine.pc+1];
+		args[1] = machine.text[machine.pc+2];
 		offset = BytestoUnsignedShort(args);
 		free(args);
-		args=NULL;
 	}
 	else{
 		offset = machine.text[machine.pc + 1];
 	}
-
 	word_t top1 = pop();
-	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == MAINREF) //lv is at the bottom of the stack ->	store to main()'s variables frame
-		storeMainVar(offset, top1);
-	else machine._stack_->Array[machine._stack_->lv + 1 + offset] = top1;
+	machine._stack_->frameLocalVar[machine._stack_->frameIndex][offset] = top1;
 	dprintf("ISTORE idx=%d, value=%d\n", offset, top1);
-
 	machine.pc += WIDE ? 3 : 2;
 }
 
@@ -208,58 +201,53 @@ inline void IINC(bool WIDE){
 	short inc;
 	if (WIDE){
 		byte_t* args = malloc(SHORT_SIZE * sizeof(byte_t));
-		memcpy(args, machine.text+machine.pc+1, SHORT_SIZE);
+		args[0] = machine.text[machine.pc+1];
+		args[1] = machine.text[machine.pc+2];
 		offset = BytestoUnsignedShort(args);
-		memcpy(args, machine.text+machine.pc+3, SHORT_SIZE);
+		args[0] = machine.text[machine.pc+3];
+		args[1] = machine.text[machine.pc+4];
 		inc = BytestoShort(args);
 		free(args);
-		args=NULL;
 	}
 	else{
 		offset = machine.text[machine.pc + 1];
 		inc = (int8_t)machine.text[machine.pc + 2]; //cast to signed byte
 	}
-
-	if (machine._stack_->lv == 0 && machine._stack_->Array[machine._stack_->lv] == MAINREF) machine._stack_->mainLocalVar[offset] += inc;
-	else machine._stack_->Array[machine._stack_->lv + 1 + offset] += inc;
+	machine._stack_->frameLocalVar[machine._stack_->frameIndex][offset] += inc;
 	dprintf("IINC var_id=%d, value=%d\n", offset, inc);
-
 	machine.pc += WIDE ? 5 : 3;
 }
 
 inline void INVOKEVIRTUAL(){
 	word_t caller_pc = machine.pc;
 	word_t caller_lv = machine._stack_->lv;
+	machine._stack_->frameIndex++;
 	byte_t* args = malloc(SHORT_SIZE * sizeof(byte_t));
-	memcpy(args, machine.text+machine.pc+1, SHORT_SIZE);
+	args[0] = machine.text[machine.pc+1];
+	args[1] = machine.text[machine.pc+2];
 	
 	//get new program counter from CONSTANT_POOL
 	unsigned short method_idx = BytestoUnsignedShort(args);
 	machine.pc = machine.constant[method_idx];
 
 	//get # of args
-	memcpy(args, machine.text+machine.pc, SHORT_SIZE);
+	args[0] = machine.text[machine.pc];
+	args[1] = machine.text[machine.pc+1];
 	unsigned short num_args = BytestoUnsignedShort(args);
 
 	//get # of local_vars
-	memcpy(args, machine.text+machine.pc+2, SHORT_SIZE);
+	args[0] = machine.text[machine.pc+2];
+	args[1] = machine.text[machine.pc+3];
 	unsigned short num_local = BytestoUnsignedShort(args); 
 
 	//push function's args to the stack
 	word_t* func_args = malloc(sizeof(word_t) * num_args);
 	for(int i = 0; i < num_args; ++i) func_args[i] = pop();
-
-	machine._stack_->lv = ++machine._stack_->sp;
-	for(int i = num_args - 1; i >= 0; --i) push(func_args[i]);
+	machine._stack_->sp++;
+	machine._stack_->lv = machine._stack_->sp;
+	for (int i = 0; i < num_args; ++i)
+		machine._stack_->frameLocalVar[machine._stack_->frameIndex][i] = func_args[num_args - i - 1];
 	
-
-	machine._stack_->sp += num_local;
-	if (machine._stack_->sp + 1 == machine._stack_->capacity){
-		machine._stack_->capacity *= 2;
-		machine._stack_->Array = realloc(machine._stack_->Array, machine._stack_->capacity * sizeof(word_t));
-		fprintf(stderr, "Stack expanded\n");
-	}
-
 	//push caller_lv and caller_pc on top of the stack, set link_ptr points to caller_pc
 	push(caller_pc);
 	machine._stack_->Array[machine._stack_->lv] = machine._stack_->sp;
@@ -280,9 +268,9 @@ inline void IRETURN(){
 	push(result); // push result on top of the stack
 	dprintf("IRETURN %d, machine.pc=%d\n", result, machine.pc);
 	machine.pc += 3;
-
 	sweep(machine._heap_->currentFrame);
 	machine._heap_->currentFrame--;
+	machine._stack_->frameIndex--;
 }
 
 inline void NEWARRAY(){

@@ -48,7 +48,7 @@ int init_ijvm(char *binary_file)
 void destroy_ijvm()
 {
 	if (!machine.isRunning) return;
-	dprintf("Destroying the IJVM...\n");
+	fprintf(stderr,"Destroying the IJVM...\n");
 	machine.isRunning = false;
 
 	// ### FREE TEXT MEM ###
@@ -59,7 +59,8 @@ void destroy_ijvm()
 	
 	// ### FREE STACK MEM ###
 	if (machine._stack_->Array!=NULL) free(machine._stack_->Array);
-	if (machine._stack_->mainLocalVar!=NULL) free(machine._stack_->mainLocalVar);
+	for (int i = 0; i < MAX_FRAME; ++i) free(machine._stack_->frameLocalVar[i]);
+	if (machine._stack_->frameLocalVar!=NULL) free(machine._stack_->frameLocalVar);
 	if (machine._stack_!=NULL) free(machine._stack_);
 
 	// ### FREE HEAP MEM ###
@@ -78,7 +79,7 @@ void destroy_ijvm()
 
 	machine.inp = NULL;
 	machine.out = NULL;
-	dprintf("Finish!\n");
+	fprintf(stderr,"Finish!\n");
 }
 
 void run()
@@ -227,8 +228,9 @@ int get_program_counter() {
 }
 
 word_t get_local_variable(int i){
-	if (machine._stack_->lv == 0) return machine._stack_->mainLocalVar[i];
-	else return machine._stack_->Array[machine._stack_->lv + 1 + i];
+	return machine._stack_->frameLocalVar[machine._stack_->frameIndex][i];
+	// if (machine._stack_->lv == 0) return machine._stack_->mainLocalVar[i];
+	// else return machine._stack_->Array[machine._stack_->lv + 1 + i];
 }
 
 byte_t get_instruction(){

@@ -25,6 +25,7 @@ bool checkFileHeader() {
 	word_t num = BytestoInt(header);
 	free(header);
 	if (num != MAGIC_NUMBER) return false;
+	fprintf(stderr, "Starting IJVM...\n");
 	return true;
 }
 
@@ -79,7 +80,11 @@ void initializeStack(){
 	machine._stack_ = malloc(sizeof(Stack));
 	machine._stack_->capacity = machine.text_size;
 	machine._stack_->Array = malloc(sizeof(word_t) * machine._stack_->capacity);
-	machine._stack_->mainLocalVar = malloc(sizeof(word_t) * LOCAL_MAX);
+	machine._stack_->frameLocalVar = malloc(MAX_FRAME * sizeof(word_t*));
+	for (int i = 0; i < MAX_FRAME; ++i)
+		machine._stack_->frameLocalVar[i] = malloc(MAX_LV * sizeof(word_t));
+	machine._stack_->frameLocalVar[0] = malloc(LOCAL_MAX * sizeof(word_t));
+	machine._stack_->frameIndex = 0;
 	machine._stack_->sp = -1;
 	machine._stack_->lv = 0;
 	push(MAINREF);
