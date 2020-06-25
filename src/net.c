@@ -51,7 +51,6 @@ void NETBIND(){
 	if (netref < 0){
 		fprintf(stderr, "NETBIND failed, push 0 on the stack\n");
 		push(0);
-		HALT();
 	}
 	else{
 		fprintf(stderr, "NETBIND successfully, push netref=%d on the stack\n", netref);
@@ -85,7 +84,6 @@ void NETCONNECT(){
 	else{
 		fprintf(stderr, "Connection failed\n", port);
 		push(0);
-		HALT();
 	}
 
 	machine.pc++;
