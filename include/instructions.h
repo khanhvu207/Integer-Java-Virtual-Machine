@@ -32,4 +32,11 @@ void IALOAD();
 void IASTORE();
 void GC();
 
+// NET
+void NETBIND();
+void NETCONNECT();
+void NETIN();
+void NETOUT();
+void NETCLOSE();
+
 #endif

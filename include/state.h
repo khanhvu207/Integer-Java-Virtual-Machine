@@ -4,10 +4,11 @@
 #include "stack.h"
 #include "heap.h"
 #include "util.h"
+#include "net.h"
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_MEMORY 8096 // max 8GB
+#define MAX_MEMORY 8096
 #define HEADER_SIZE 4
 #define BLOCK_SIZE 4
 #define SHORT_SIZE 2

@@ -178,7 +178,22 @@ bool step() {
 		case OP_GC:
 			GC();
 			break;
-		// ############
+		// ### NET ###
+		case OP_NETBIND:
+			NETBIND();
+			break;
+		case OP_NETCONNECT:
+			NETCONNECT();
+			break;
+		case OP_NETIN:
+			NETIN();
+			break;
+		case OP_NETOUT:
+			NETOUT();
+			break;
+		case OP_NETCLOSE:
+			NETCLOSE();
+			break;
 		default:
 			dprintf("Couldn't find the corresponding OP_CODE:%02x\n", machine.text[machine.pc]);
 			HALT();

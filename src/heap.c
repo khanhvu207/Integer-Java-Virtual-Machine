@@ -65,14 +65,6 @@ inline void resizeHeap(){
 
 inline void triggerOnNewFrame(){
 	machine._heap_->currentFrame++;
-	// if (machine._heap_->currentFrame + 1 >= machine._heap_->trackerCap){
-	// 	machine._heap_->trackerCap += 1;
-	// 	machine._heap_->countArray = realloc(machine._heap_->countArray, machine._heap_->trackerCap * sizeof(word_t));
-	// 	machine._heap_->listSize = realloc(machine._heap_->listSize, machine._heap_->trackerCap * sizeof(word_t));
-	// 	machine._heap_->arrayrefList = realloc(machine._heap_->arrayrefList, machine._heap_->trackerCap * sizeof(word_t*));
-	// 	// machine._heap_->arrayrefList[machine._heap_->trackerCap-1] = malloc(1 * sizeof(word_t));
-	// }
-
 	int frameIndex = machine._heap_->currentFrame;
 	machine._heap_->countArray[frameIndex] = 0;
 	machine._heap_->listSize[frameIndex] = 1;
@@ -92,6 +84,7 @@ inline void resizeList(){
 }
 
 inline void sweep(int frameIndex){
+	if (machine._heap_->arrayrefList[frameIndex]==NULL) return;
 	for (int i = 0; i < machine._heap_->countArray[frameIndex]; ++i){
 		int arrayref = machine._heap_->arrayrefList[frameIndex][i];
 		if(!machine._heap_->used[arrayref]) continue;
