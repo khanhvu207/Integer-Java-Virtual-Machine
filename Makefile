@@ -17,7 +17,8 @@ LIBS=-lm
 DEPS = $(wildcard $(IDIR)/*.h)
 SRCS = $(wildcard $(SRCDIR)/*.c)
 _OBJ = $(patsubst $(SRCDIR)/%,$(ODIR)/%,$(SRCS:.c=.o))
-OBJ = $(filter-out $(ODIR)/main.o,$(_OBJ))
+_OBJ2 = $(filter-out $(ODIR)/gui.o,$(_OBJ)) 
+OBJ = $(filter-out $(ODIR)/main.o,$(_OBJ2))
 
 DEPS2 := $(OBJ:.o=.d)
 -include $(DEPS2)
@@ -28,7 +29,7 @@ $(ODIR)/%.o: $(SRCDIR)/%.c
 	+@[ -d $(ODIR) ] || mkdir -p $(ODIR)
 	$(CC) -MMD $(CFLAGS) -c -o $@ $<
 
-ijvm-gui: $(OBJ) src/gui/gui.c
+ijvm-gui: $(OBJ) src/gui.c
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 ijvm: $(OBJ) $(ODIR)/main.o
