@@ -1,6 +1,6 @@
 # Integer Java-Virtual Machine
-An IJVM emulator by Khanh Vu
-Required OS: Ubuntu 18.04LTS
+*An IJVM emulator by Khanh Vu  
+Required OS: Ubuntu 18.04 LTS*
 
 ## Run the code
 
@@ -33,12 +33,18 @@ $ ./ijvm <binary_file_directory>
 ### Stack
 The stack was implemented accordingly to the *Structured computer organization* by Andrew S. Tanenbaum. Each frame is bounded by the **Stack pointer** and **Local variables pointer**. For the ease of implementating the stack, I append an object called **MAINREF** at the bottom, which lets us know if we are at the main frame (frame 0) or not.  
 
+![stack_img](https://github.com/khanhvu207/Integer-Java-Virtual-Machine/blob/master/img/stack.png)
+
 ### Heap
 I maintain a list of pointers, each of which points to the start of an array.
+
+![heap_img](https://github.com/khanhvu207/Integer-Java-Virtual-Machine/blob/master/img/heap.png)
 
 ## Bonus features
 ### Garbage collection
 For each frame, I keep track of arrays created by the NEWARRAY instruction. Those arrays (**arrayref** values) are pushed to the list, which later on being cleared during the *SWEEP* phase. 
+
+![gc_img](https://github.com/khanhvu207/Integer-Java-Virtual-Machine/blob/master/img/gc.png)
 
 ### GUI
 I implemented this GUI using GTK+ 2.0.
@@ -56,5 +62,8 @@ I implemented this GUI using GTK+ 2.0.
    ```
    $ make ijvm-gui
    $ ./ijvm-gui
+   
+![gui_img](https://github.com/khanhvu207/Integer-Java-Virtual-Machine/blob/master/img/gui.png)
+
 ### Network communication (Socket programming)
 Standard socket programming, supports BIND (server side) and CONNECT (client side).
