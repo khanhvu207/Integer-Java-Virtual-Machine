@@ -32,7 +32,7 @@ $ ./ijvm <binary_file_directory>
 ```
 ## Implementations
 ### Stack
-The stack was implemented accordingly to the *Structured computer organization* by Andrew S. Tanenbaum. Each frame is bounded by the **Stack pointer** and **Local variables pointer**. For the ease of implementating the stack, I append an object called **MAINREF** at the bottom, which lets us know if we are at the main frame (frame 0) or not.  
+The stack was implemented accordingly to the *Structured computer organization* by Andrew S. Tanenbaum. Each frame is bounded by the **Stack pointer** and **Local variables pointer**. For the ease of implementating the stack, I created an array storing local variables for each frame. 
 
 ![stack_img](https://github.com/khanhvu207/Integer-Java-Virtual-Machine/blob/master/img/stack.png)
 

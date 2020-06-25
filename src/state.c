@@ -87,7 +87,6 @@ void initializeStack(){
 	machine._stack_->frameIndex = 0;
 	machine._stack_->sp = -1;
 	machine._stack_->lv = 0;
-	push(MAINREF);
 }
 
 void initializeHeap(){

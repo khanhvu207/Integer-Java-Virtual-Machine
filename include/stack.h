@@ -2,7 +2,6 @@
 #define STACK_H
 #include "ijvm.h"
 
-#define MAINREF 0xFFFFFFFF
 #define LOCAL_MAX (1<<16)
 #define MAX_FRAME 1000
 #define MAX_LV 100
@@ -12,7 +11,7 @@ typedef struct Stack {
 	word_t lv;
 	word_t* Array;
 	word_t capacity;
-
+	
 	word_t** frameLocalVar;
 	word_t frameIndex;
 } Stack;
